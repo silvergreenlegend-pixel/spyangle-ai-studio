@@ -25,7 +25,7 @@ except KeyError:
 # Define your live payment link URL and your secure system license passkeys.
 # =========================================================================
 # 🔴 REPLACE THIS LINK WITH YOUR ACTUAL STRIPE PAYMENT LINK FROM YOUR DASHBOARD
-STRIPE_PAYMENT_URL = "https://stripe.com"
+STRIPE_PAYMENT_URL = "https://buy.stripe.com/test_4gMfZi3v66jv7VcgbDeEo00"
 
 # Production Cryptographic Database Mapping:
 # Instead of storing raw user passwords, you store the SHA-256 hash of your paying clients' email addresses.
@@ -205,3 +205,103 @@ st.divider()
 if st.session_state.is_authenticated_user:
     
     # Active Session Core Workspace Grid Layout
+    col_input, col_output = st.columns([1, 1.3], gap="large")
+
+    with col_input:
+        st.markdown("### 📥 Competitor Source Data")
+        st.caption("Paste competitor text payloads, landing assets, or product structures below:")
+        
+        competitor_payload = st.text_area(
+            label="Input Field Container:",
+            label_visibility="collapsed",
+            height=320,
+            placeholder="Example: The Ridge wallet sells minimal titanium cardholder options. Their marketing emphasizes discarding old bulky leather bifold wallets that damage posture and compromise card data privacy via RFID scanning..."
+        )
+        
+        run_processing_node = st.button("Execute Core Intelligence Extraction")
+
+    with col_output:
+        st.markdown("### 📊 Extracted Strategic Dossier")
+        
+        if run_processing_node:
+            if not competitor_payload.strip() or len(competitor_payload) < 10:
+                st.error("Operational Halt: Input dataset payload length is insufficient for analysis.")
+            else:
+                with st.spinner("Securing API pipeline channels. Extracting psychological angles..."):
+                    try:
+                        client = Groq(api_key=api_key)
+                        
+                        system_instruction = "You are a world-class conversion rate optimization specialist and master copywriter."
+                        analysis_instruction = f"Analyze the following raw context text from a competitor's storefront assets and extract their core operational architecture blueprint data:\n\nRaw Context Payload:\n{competitor_payload}\n\nPlease provide a sharp breakdown containing:\n1. THE PRIMARY HOOK\n2. CORE PAIN POINT AGITATION\n3. MARKET POSITIONING FRAMEWORK\n4. COUNTER-ATTACK CAMPAIGN BLUEPRINT\n5. HIGH-CONVERSION SOCIAL ADS SCRIPTS."
+                        
+                        response = client.chat.completions.create(
+                            model="qwen/qwen3.6-27b",
+                            messages=[
+                                {"role": "system", "content": system_instruction},
+                                {"role": "user", "content": analysis_instruction}
+                            ],
+                            temperature=0.3,
+                            max_tokens=4096
+                        )
+                        
+                        st.success("Handshake Successful. Intelligence Compiled Below:")
+                        st.markdown(response.choices[0].message.content)
+                        
+                    except Exception as e:
+                        st.error(f"❌ CONNECTION FAILURE UNHANDLED OUTBOUND THREAD:\n\n{str(e)}")
+        else:
+            st.info("System Idle: Awaiting data inputs. Paste competitor sales text on the left workspace window and run the dashboard extractor engine.")
+
+else:
+    # High-Converting Production Paywall Gating Screen with Hyperlink Anchor Call to Actions
+    st.markdown(f"""
+        <div style="background-color: #1e1b4b; border: 2px dashed #4f46e5; padding: 45px; border-radius: 20px; text-align: center; margin-top: 10px; margin-bottom: 30px;">
+            <span style="font-size: 55px;">🔒</span>
+            <h2 style="margin-top: 20px; margin-bottom: 4px; color: white !important;">Unlock the SpyAngle Enterprise Studio</h2>
+            
+            <!-- Dynamic Pricing Visual Badges -->
+            <div style="margin: 18px 0;">
+                <span style="background: rgba(99, 102, 241, 0.2); border: 1px solid #6366f1; color: #a5b4fc; padding: 6px 18px; border-radius: 50px; font-weight: 700; font-size: 16px; margin-right: 10px; display: inline-block;">
+                    \\$29 / Month
+                </span>
+                <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #6ee7b7; padding: 6px 18px; border-radius: 50px; font-weight: 700; font-size: 16px; display: inline-block;">
+                    Approx. R470 / Month
+                </span>
+            </div>
+
+            <!-- Conversion Rate Optimized Motivational Copywriting -->
+            <p style="color: #e2e8f0; font-size: 16px; font-weight: 600; max-width: 700px; margin: 20px auto 10px auto; line-height: 1.5;">
+                Stop Burning Ad Budget on Blind Angle Testing. Reverse-Engineer What is Already Printing Cash.
+            </p>
+            <p style="color: #94a3b8; font-size: 14px; max-width: 680px; margin: 0 auto 28px auto; line-height: 1.6; text-align: center;">
+                In high-velocity digital advertising, launching campaigns blindly is financial suicide. Your top competitors spend thousands of dollars optimizing hooks, uncovering specific customer fears, and isolating psychological angles so you don't have to. SpyAngle AI Studio reverse-engineers their underlying sales frameworks and outputs three hyper-tailored variations of direct-response social ad scripts in under 10 seconds. Secure your unfair arbitrage edge. One single winning ad creative pays for this platform for an entire year.
+            </p>
+            
+            <div style="max-width: 340px; margin: 0 auto;">
+                <a href="{STRIPE_PAYMENT_URL}" target="_blank" style="text-decoration: none;">
+                    <div style="background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%); color: white; padding: 14px 32px; border-radius: 12px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); text-align: center; transition: all 0.2s;">
+                        🚀 Start Your Premium Subscription Now
+                    </div>
+                </a>
+            </div>
+            <p style="color: #475569; font-size: 12px; margin-top: 18px;">
+                Secure sub-second transaction routing handled via Stripe Infrastructure • Cancel or pause anytime with 1-click.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Internal Image Design Asset Reference Container
+    with st.expander("🎨 View Stripe Dashboard Product Image Visual Blueprint"):
+        st.markdown("""
+        ### 📌 Your Stripe Dashboard Product Image Guide
+        Stripe permits you to upload a **1:1 square aspect ratio product card cover image (512x512 pixels)** to represent your software platform visual brand identity during customer checkouts. Use this layout setup blueprint to create a professional image graphic asset inside **Canva**:
+        
+        *   **Canvas Geometry:** 512 x 512 pixels (Square aspect canvas profile grid layout).
+        *   **Background Base Layer:** A sleek, minimal deep metallic midnight blue gradient canvas (`#0f172a` blending into `#020617`) matching the exact theme accents of the software dashboard.
+        *   **Central Aesthetic Anchor:** A glowing neon electric-indigo minimalist magnifying glass glyph overlapping a translucent glassmorphic square representing an analytical server code or dashboard data sheet array layer.
+        *   **Floating Graphic Accents:** Subtle, stylized vector ambient glow layers floating alongside crisp circular frosted badges embedded with the **Meta (Facebook/Instagram), TikTok, and Google Ads** logos.
+        *   **Typography Footer Overlay:** A modern geometric clean sans-serif typeface placed centered near the lower margin edge declaring: `SPYANGLE STUDIO - PRO PLATFORM ACCREDITATION`.
+        *   **Aesthetic Color Tone:** Dark mode background offset by intense high-visibility glowing indigos, neon violets, and sharp emerald green vector charts to immediately communicate enterprise-tier software authority.
+        """)
+        
+    st.info("💡 Local Testing Notice: Type the master testing email address `test@domain.com` or `admin@domain.com` into the access console inside the left sidebar tray to instantly unlock and run the enterprise studio engine interface panels.")
