@@ -251,44 +251,42 @@ if st.session_state.is_authenticated_user:
             st.info("System Idle: Awaiting data inputs. Paste competitor sales text on the left workspace window and run the dashboard extractor engine.")
 
 else:
-    # 🌟 FIXED: HTML Paywall card block placed completely flush at column 0 
-    # This prevents the Streamlit Markdown indentation parsing bug from reading it as preformatted code text!
-    paywall_html_layout = f"""
-<div style="background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1px solid #4f46e5; padding: 45px; border-radius: 20px; text-align: center; margin-top: 10px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-    <span style="font-size: 55px;">🔒</span>
-    <h2 style="margin-top: 20px; margin-bottom: 4px; color: white !important; font-family: 'Inter', sans-serif;">Unlock the SpyAngle Enterprise Studio</h2>
-    
-    <!-- Dynamic Pricing Visual Badges -->
-    <div style="margin: 18px 0; text-align: center;">
-        <span style="background: rgba(99, 102, 241, 0.2); border: 1px solid #6366f1; color: #a5b4fc; padding: 6px 18px; border-radius: 50px; font-weight: 700; font-size: 16px; margin-right: 10px; display: inline-block;">
-            $29 / Month
-        </span>
-        <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #6ee7b7; padding: 6px 18px; border-radius: 50px; font-weight: 700; font-size: 16px; display: inline-block;">
-            Approx. R470 / Month
-        </span>
-    </div>
-
-    <!-- Conversion Rate Optimized Motivational Copywriting -->
-    <p style="color: #e2e8f0; font-size: 16px; font-weight: 600; max-width: 700px; margin: 20px auto 10px auto; line-height: 1.5; font-family: 'Inter', sans-serif; text-align: center;">
-        Stop Burning Ad Budget on Blind Angle Testing. Reverse-Engineer What is Already Printing Cash.
-    </p>
-    <p style="color: #94a3b8; font-size: 14px; max-width: 680px; margin: 0 auto 28px auto; line-height: 1.6; text-align: center; font-family: 'Inter', sans-serif;">
-        In high-velocity digital advertising, launching campaigns blindly is financial suicide. Your top competitors spend thousands of dollars optimizing hooks, uncovering specific customer fears, and isolating psychological angles so you don't have to. SpyAngle AI Studio reverse-engineers their underlying sales frameworks and outputs three hyper-tailored variations of direct-response social ad scripts in under 10 seconds. Secure your unfair arbitrage edge. One single winning ad creative pays for this platform for an entire year.
-    </p>
-    
-    <div style="max-width: 340px; margin: 0 auto;">
-        <a href="{STRIPE_PAYMENT_URL}" target="_blank" style="text-decoration: none;">
-            <div style="background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%); color: white; padding: 14px 32px; border-radius: 12px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); text-align: center; font-family: 'Inter', sans-serif;">
-                🚀 Start Your Premium Subscription Now
-            </div>
-        </a>
-    </div>
-    <p style="color: #475569; font-size: 12px; margin-top: 18px; font-family: 'Inter', sans-serif; text-align: center;">
-        Secure sub-second transaction routing handled via Stripe Infrastructure • Cancel or pause anytime with 1-click.
-    </p>
-</div>
-"""
-    st.markdown(paywall_html_layout, unsafe_allow_html=True)
+    # 🌟 Fully Operational, Clean Native Streamlit Paywall UI Interface Container
+    with st.container(border=True):
+        st.write("")
+        st.markdown("<h2 style='text-align: center; margin-top: 0px; color: white;'>🔒 Unlock the SpyAngle Enterprise Studio</h2>", unsafe_allow_html=True)
+        st.write("")
+        
+        # Native Layout Alignment Columns for Badges
+        p_col1, p_col2 = st.columns(2)
+        with p_col1:
+            st.metric(label="Global Plan Pricing", value="$29 / Month", delta="PRO ACCESS")
+        with p_col2:
+            st.metric(label="South African Rate (Approx)", value="R470 / Month", delta="Local Node")
+            
+        st.divider()
+        
+        # High-converting motivational pillars styled flawlessly without text breaks
+        st.markdown("### **Stop Burning Ad Budget on Blind Angle Testing. Reverse-Engineer What is Already Printing Cash.**")
+        st.write(
+            "In high-velocity digital advertising, launching campaigns blindly is financial suicide. "
+            "Your top competitors spend thousands of dollars optimizing hooks, uncovering specific customer fears, "
+            "and isolating psychological angles so you don't have to. SpyAngle AI Studio reverse-engineers "
+            "their underlying sales frameworks and outputs three hyper-tailored variations of direct-response social "
+            "ad scripts in under 10 seconds. Secure your unfair arbitrage edge. One single winning ad creative pays "
+            "for this platform for an entire year."
+        )
+        
+        st.write("")
+        
+        # Beautiful, Clean Native Interactive Stripe Linking Button
+        st.link_button(
+            label="🚀 Start Your Premium Subscription Now",
+            url=STRIPE_PAYMENT_URL,
+            use_container_width=True
+        )
+        
+        st.caption("Secure sub-second transaction routing handled via Stripe Infrastructure • Cancel or pause anytime with 1-click.")
 
     # Internal Image Design Asset Reference Container
     with st.expander("🎨 View Stripe Dashboard Product Image Visual Blueprint"):
