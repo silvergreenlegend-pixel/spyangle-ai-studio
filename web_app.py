@@ -24,15 +24,15 @@ except KeyError:
 # LIVE PRODUCTION STRIPE PAYWALL CONFIGURATION
 # Define your live payment link URL and your secure system license passkeys.
 # =========================================================================
-# 🔴 Your live verified Stripe checkout link node
+# Your live verified Stripe checkout link node
 STRIPE_PAYMENT_URL = "https://buy.stripe.com/test_4gMfZi3v66jv7VcgbDeEo00"
 
 # Production Cryptographic Database Mapping:
 # Instead of storing raw user passwords, you store the SHA-256 hash of your paying clients' email addresses.
-# Below are pre-configured valid hashes for local sandbox testing:
+# FIXED: We use Python to dynamically compute the hashes at runtime to guarantee an exact match.
 VALID_SUBSCRIBER_HASHES = [
-    "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", # Secure Hash of "test@domain.com"
-    "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"  # Secure Hash of "admin@domain.com"
+    hashlib.sha256("test@domain.com".encode()).hexdigest(),   # Dynamically hashes "test@domain.com"
+    hashlib.sha256("admin@domain.com".encode()).hexdigest()   # Dynamically hashes "admin@domain.com"
 ]
 
 # Initialize clean native session state parameters persistently
@@ -40,8 +40,6 @@ if "is_authenticated_user" not in st.session_state:
     st.session_state.is_authenticated_user = False
 if "verified_email" not in st.session_state:
     st.session_state.verified_email = ""
-if "login_error_msg" not in st.session_state:
-    st.session_state.login_error_msg = ""
 
 # Custom high-end dark styling injects to construct custom gradient nodes and glassmorphism cards
 st.markdown("""
@@ -98,27 +96,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # =========================================================================
-# FORM INTERACTION CALLBACK ENGINE
-# Processes inputs inside an isolated callback phase before UI compilation.
-# =========================================================================
-def process_form_login():
-    raw_input = st.session_state.get("email_input_field", "").strip()
-    if raw_input:
-        clean_email = raw_input.replace(" ", "").replace("\n", "").replace("\r", "").lower()
-        input_hash = hashlib.sha256(clean_email.encode()).hexdigest()
-        
-        if input_hash in VALID_SUBSCRIBER_HASHES:
-            st.session_state.is_authenticated_user = True
-            st.session_state.verified_email = clean_email
-            st.session_state.login_error_msg = ""
-        else:
-            st.session_state.is_authenticated_user = False
-            st.session_state.login_error_msg = "❌ NO ACTIVE SUBSCRIPTION FOUND"
-    else:
-        st.session_state.is_authenticated_user = False
-        st.session_state.login_error_msg = "🔒 ENTER EMAIL TO ACCESS ENGINE"
-
-# =========================================================================
 # APPLICATION SIDEBAR CONTROL CENTER
 # Manages user session state status indicators and displays account tags.
 # =========================================================================
@@ -126,22 +103,31 @@ with st.sidebar:
     st.markdown("### 🔐 Client Access Console")
     
     if not st.session_state.is_authenticated_user:
-        with st.form("sidebar_login_form"):
-            st.text_input(
-                "Enter Registered Account Email:",
-                placeholder="user@example.com",
-                key="email_input_field"
-            )
-            st.form_submit_button("Verify Account Access", on_click=process_form_login)
-            
-        if st.session_state.login_error_msg:
-            st.error(st.session_state.login_error_msg)
+        user_email_input = st.text_input(
+            "Enter Registered Account Email:",
+            placeholder="user@example.com"
+        )
+        click_verify = st.button("Verify Account Access")
+        
+        if click_verify:
+            if user_email_input:
+                clean_email = user_email_input.replace(" ", "").replace("\n", "").replace("\r", "").strip().lower()
+                input_hash = hashlib.sha256(clean_email.encode()).hexdigest()
+                
+                if input_hash in VALID_SUBSCRIBER_HASHES:
+                    st.session_state.is_authenticated_user = True
+                    st.session_state.verified_email = clean_email
+                    st.success("Access Granted! Unlocking...")
+                    st.rerun()
+                else:
+                    st.error("❌ NO ACTIVE SUBSCRIPTION FOUND")
+            else:
+                st.warning("🔒 ENTER EMAIL TO ACCESS ENGINE")
     else:
         st.success(f"Verified Active Pro Profile:\n\n{st.session_state.verified_email}")
         if st.button("Logout Profile"):
             st.session_state.is_authenticated_user = False
             st.session_state.verified_email = ""
-            st.session_state.login_error_msg = ""
             st.rerun()
 
     st.divider()
