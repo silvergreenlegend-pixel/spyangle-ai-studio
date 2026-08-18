@@ -24,12 +24,11 @@ except KeyError:
 # LIVE PRODUCTION STRIPE PAYWALL CONFIGURATION
 # Define your live payment link URL and your secure system license passkeys.
 # =========================================================================
-# 🔴 REPLACE THIS LINK WITH YOUR ACTUAL STRIPE PAYMENT LINK FROM YOUR DASHBOARD
+# 🔴 Your live verified Stripe checkout link node
 STRIPE_PAYMENT_URL = "https://buy.stripe.com/test_4gMfZi3v66jv7VcgbDeEo00"
 
 # Production Cryptographic Database Mapping:
 # Instead of storing raw user passwords, you store the SHA-256 hash of your paying clients' email addresses.
-# This prevents password sharing since users must input their specific purchasing email address.
 # Below are pre-configured valid hashes for local sandbox testing:
 VALID_SUBSCRIBER_HASHES = [
     "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", # Secure Hash of "test@domain.com"
@@ -203,7 +202,6 @@ st.divider()
 # Evaluates authorization credentials before serving functional workspace interfaces.
 # =========================================================================
 if st.session_state.is_authenticated_user:
-    
     # Active Session Core Workspace Grid Layout
     col_input, col_output = st.columns([1, 1.3], gap="large")
 
@@ -253,43 +251,45 @@ if st.session_state.is_authenticated_user:
             st.info("System Idle: Awaiting data inputs. Paste competitor sales text on the left workspace window and run the dashboard extractor engine.")
 
 else:
-    # High-Converting Production Paywall Gating Screen with Hyperlink Anchor Call to Actions
-    st.markdown(f"""
-        <div style="background-color: #1e1b4b; border: 2px dashed #4f46e5; padding: 45px; border-radius: 20px; text-align: center; margin-top: 10px; margin-bottom: 30px;">
-            <span style="font-size: 55px;">🔒</span>
-            <h2 style="margin-top: 20px; margin-bottom: 4px; color: white !important;">Unlock the SpyAngle Enterprise Studio</h2>
-            
-            <!-- Dynamic Pricing Visual Badges -->
-            <div style="margin: 18px 0;">
-                <span style="background: rgba(99, 102, 241, 0.2); border: 1px solid #6366f1; color: #a5b4fc; padding: 6px 18px; border-radius: 50px; font-weight: 700; font-size: 16px; margin-right: 10px; display: inline-block;">
-                    \\$29 / Month
-                </span>
-                <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #6ee7b7; padding: 6px 18px; border-radius: 50px; font-weight: 700; font-size: 16px; display: inline-block;">
-                    Approx. R470 / Month
-                </span>
-            </div>
-
-            <!-- Conversion Rate Optimized Motivational Copywriting -->
-            <p style="color: #e2e8f0; font-size: 16px; font-weight: 600; max-width: 700px; margin: 20px auto 10px auto; line-height: 1.5;">
-                Stop Burning Ad Budget on Blind Angle Testing. Reverse-Engineer What is Already Printing Cash.
-            </p>
-            <p style="color: #94a3b8; font-size: 14px; max-width: 680px; margin: 0 auto 28px auto; line-height: 1.6; text-align: center;">
-                In high-velocity digital advertising, launching campaigns blindly is financial suicide. Your top competitors spend thousands of dollars optimizing hooks, uncovering specific customer fears, and isolating psychological angles so you don't have to. SpyAngle AI Studio reverse-engineers their underlying sales frameworks and outputs three hyper-tailored variations of direct-response social ad scripts in under 10 seconds. Secure your unfair arbitrage edge. One single winning ad creative pays for this platform for an entire year.
-            </p>
-            
-            <div style="max-width: 340px; margin: 0 auto;">
-                <a href="{STRIPE_PAYMENT_URL}" target="_blank" style="text-decoration: none;">
-                    <div style="background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%); color: white; padding: 14px 32px; border-radius: 12px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); text-align: center; transition: all 0.2s;">
-                        🚀 Start Your Premium Subscription Now
-                    </div>
-                </a>
-            </div>
-            <p style="color: #475569; font-size: 12px; margin-top: 18px;">
-                Secure sub-second transaction routing handled via Stripe Infrastructure • Cancel or pause anytime with 1-click.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
+    # 🌟 FIXED: HTML Paywall card block placed completely flush at column 0 
+    # This prevents the Streamlit Markdown indentation parsing bug from reading it as preformatted code text!
+    paywall_html_layout = f"""
+<div style="background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1px solid #4f46e5; padding: 45px; border-radius: 20px; text-align: center; margin-top: 10px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <span style="font-size: 55px;">🔒</span>
+    <h2 style="margin-top: 20px; margin-bottom: 4px; color: white !important; font-family: 'Inter', sans-serif;">Unlock the SpyAngle Enterprise Studio</h2>
     
+    <!-- Dynamic Pricing Visual Badges -->
+    <div style="margin: 18px 0; text-align: center;">
+        <span style="background: rgba(99, 102, 241, 0.2); border: 1px solid #6366f1; color: #a5b4fc; padding: 6px 18px; border-radius: 50px; font-weight: 700; font-size: 16px; margin-right: 10px; display: inline-block;">
+            $29 / Month
+        </span>
+        <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #6ee7b7; padding: 6px 18px; border-radius: 50px; font-weight: 700; font-size: 16px; display: inline-block;">
+            Approx. R470 / Month
+        </span>
+    </div>
+
+    <!-- Conversion Rate Optimized Motivational Copywriting -->
+    <p style="color: #e2e8f0; font-size: 16px; font-weight: 600; max-width: 700px; margin: 20px auto 10px auto; line-height: 1.5; font-family: 'Inter', sans-serif; text-align: center;">
+        Stop Burning Ad Budget on Blind Angle Testing. Reverse-Engineer What is Already Printing Cash.
+    </p>
+    <p style="color: #94a3b8; font-size: 14px; max-width: 680px; margin: 0 auto 28px auto; line-height: 1.6; text-align: center; font-family: 'Inter', sans-serif;">
+        In high-velocity digital advertising, launching campaigns blindly is financial suicide. Your top competitors spend thousands of dollars optimizing hooks, uncovering specific customer fears, and isolating psychological angles so you don't have to. SpyAngle AI Studio reverse-engineers their underlying sales frameworks and outputs three hyper-tailored variations of direct-response social ad scripts in under 10 seconds. Secure your unfair arbitrage edge. One single winning ad creative pays for this platform for an entire year.
+    </p>
+    
+    <div style="max-width: 340px; margin: 0 auto;">
+        <a href="{STRIPE_PAYMENT_URL}" target="_blank" style="text-decoration: none;">
+            <div style="background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%); color: white; padding: 14px 32px; border-radius: 12px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); text-align: center; font-family: 'Inter', sans-serif;">
+                🚀 Start Your Premium Subscription Now
+            </div>
+        </a>
+    </div>
+    <p style="color: #475569; font-size: 12px; margin-top: 18px; font-family: 'Inter', sans-serif; text-align: center;">
+        Secure sub-second transaction routing handled via Stripe Infrastructure • Cancel or pause anytime with 1-click.
+    </p>
+</div>
+"""
+    st.markdown(paywall_html_layout, unsafe_allow_html=True)
+
     # Internal Image Design Asset Reference Container
     with st.expander("🎨 View Stripe Dashboard Product Image Visual Blueprint"):
         st.markdown("""
