@@ -115,6 +115,7 @@ def process_form_login():
             st.session_state.is_authenticated_user = False
             st.session_state.login_error_msg = "❌ NO ACTIVE SUBSCRIPTION FOUND"
     else:
+        st.session_state.is_authenticated_user = False
         st.session_state.login_error_msg = "🔒 ENTER EMAIL TO ACCESS ENGINE"
 
 # =========================================================================
@@ -125,7 +126,6 @@ with st.sidebar:
     st.markdown("### 🔐 Client Access Console")
     
     if not st.session_state.is_authenticated_user:
-        # Form block utilizing explicitly assigned keys and decoupled state triggers
         with st.form("sidebar_login_form"):
             st.text_input(
                 "Enter Registered Account Email:",
@@ -134,7 +134,6 @@ with st.sidebar:
             )
             st.form_submit_button("Verify Account Access", on_click=process_form_login)
             
-        # Render errors persistently if caught during submission phase
         if st.session_state.login_error_msg:
             st.error(st.session_state.login_error_msg)
     else:
@@ -149,7 +148,6 @@ with st.sidebar:
     st.markdown("### ⚙️ Engine Control Node")
     st.caption("Deployment Tier: Live Public Web App Cluster")
     
-    # Live operational parameter indicators
     if st.session_state.is_authenticated_user:
         st.metric(label="API Key Handshake", value="AUTHORIZED", delta="Active Session Node")
     else:
@@ -209,3 +207,104 @@ with b2:
 
 with b3:
     st.markdown("""
+        <div class="metric-card">
+            <h3 style="font-size: 16px; margin: 0 0 8px 0; color: #10b981 !important;">🚀 Ready-To-Launch Assets</h3>
+            <p style="font-size: 24px; font-weight: 700; margin: 0; color: white;">3X Meta/TikTok Ad Scripts</p>
+            <p style="font-size: 12px; color: #64748b; margin: 8px 0 0 0; line-height: 1.4;">
+                Automatically drafts three hyper-tailored social ad variations. Each variations generates a unique hook variation, full ad caption body structure, and crisp visual direction frames for immediate production.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+st.divider()
+
+# =========================================================================
+# CORE WORKSPACE FUNCTIONAL ROUTING
+# Evaluates authorization credentials before serving functional workspace interfaces.
+# =========================================================================
+if st.session_state.is_authenticated_user:
+    # Active Session Core Workspace Grid Layout
+    col_input, col_output = st.columns([1, 1.3], gap="large")
+
+    with col_input:
+        st.markdown("### 📥 Competitor Source Data")
+        st.caption("Paste competitor text payloads, landing assets, or product structures below:")
+        
+        competitor_payload = st.text_area(
+            label="Input Field Container:",
+            label_visibility="collapsed",
+            height=320,
+            placeholder="Example: The Ridge wallet sells minimal titanium cardholder options. Their marketing emphasizes discarding old bulky leather bifold wallets that damage posture and compromise card data privacy via RFID scanning..."
+        )
+        
+        run_processing_node = st.button("Execute Core Intelligence Extraction")
+
+    with col_output:
+        st.markdown("### 📊 Extracted Strategic Dossier")
+        
+        if run_processing_node:
+            if not competitor_payload.strip() or len(competitor_payload) < 10:
+                st.error("Operational Halt: Input dataset payload length is insufficient for analysis.")
+            else:
+                with st.spinner("Securing API pipeline channels. Extracting psychological angles..."):
+                    try:
+                        client = Groq(api_key=api_key)
+                        
+                        system_instruction = "You are a world-class conversion rate optimization specialist and master copywriter."
+                        analysis_instruction = f"Analyze the following raw context text from a competitor's storefront assets and extract their core operational architecture blueprint data:\n\nRaw Context Payload:\n{competitor_payload}\n\nPlease provide a sharp breakdown containing:\n1. THE PRIMARY HOOK\n2. CORE PAIN POINT AGITATION\n3. MARKET POSITIONING FRAMEWORK\n4. COUNTER-ATTACK CAMPAIGN BLUEPRINT\n5. HIGH-CONVERSION SOCIAL ADS SCRIPTS."
+                        
+                        response = client.chat.completions.create(
+                            model="qwen/qwen3.6-27b",
+                            messages=[
+                                {"role": "system", "content": system_instruction},
+                                {"role": "user", "content": analysis_instruction}
+                            ],
+                            temperature=0.3,
+                            max_tokens=4096
+                        )
+                        
+                        st.success("Handshake Successful. Intelligence Compiled Below:")
+                        st.markdown(response.choices[0].message.content)
+                        
+                    except Exception as e:
+                        st.error(f"❌ CONNECTION FAILURE UNHANDLED OUTBOUND THREAD:\n\n{str(e)}")
+        else:
+            st.info("System Idle: Awaiting data inputs. Paste competitor sales text on the left workspace window and run the dashboard extractor engine.")
+
+else:
+    # 🌟 Fully Operational, Clean Native Streamlit Paywall UI Interface Container
+    with st.container(border=True):
+        st.write("")
+        st.markdown("<h2 style='text-align: center; margin-top: 0px; color: white;'>🔒 Unlock the SpyAngle Enterprise Studio</h2>", unsafe_allow_html=True)
+        st.write("")
+        
+        # Native Layout Alignment Columns for Badges
+        p_col1, p_col2 = st.columns(2)
+        with p_col1:
+            st.metric(label="Global Plan Pricing", value="$29 / Month", delta="PRO ACCESS")
+        with p_col2:
+            st.metric(label="South African Rate (Approx)", value="R470 / Month", delta="Local Node")
+            
+        st.divider()
+        
+        # High-converting motivational pillars styled flawlessly without text breaks
+        st.markdown("### **Stop Burning Ad Budget on Blind Angle Testing. Reverse-Engineer What is Already Printing Cash.**")
+        st.write(
+            "In high-velocity digital advertising, launching campaigns blindly is financial suicide. "
+            "Your top competitors spend thousands of dollars optimizing hooks, uncovering specific customer fears, "
+            "and isolating psychological angles so you don't have to. SpyAngle AI Studio reverse-engineers "
+            "their underlying sales frameworks and outputs three hyper-tailored variations of direct-response social "
+            "ad scripts in under 10 seconds. Secure your unfair arbitrage edge. One single winning ad creative pays "
+            "for this platform for an entire year."
+        )
+        
+        st.write("")
+        
+        # Beautiful, Clean Native Interactive Stripe Linking Button
+        st.link_button(
+            label="🚀 Start Your Premium Subscription Now",
+            url=STRIPE_PAYMENT_URL,
+            use_container_width=True
+        )
+        
+        st.caption("Secure sub-second transaction routing handled via Stripe Infrastructure • Cancel or pause anytime with 1-click.")
