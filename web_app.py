@@ -27,13 +27,19 @@ except KeyError:
 # Your live verified Stripe checkout link node
 STRIPE_PAYMENT_URL = "https://buy.stripe.com/test_4gMfZi3v66jv7VcgbDeEo00"
 
-# Production Cryptographic Database Mapping:
-# Instead of storing raw user passwords, you store the SHA-256 hash of your paying clients' email addresses.
-# FIXED: We use Python to dynamically compute the hashes at runtime to guarantee an exact match.
-VALID_SUBSCRIBER_HASHES = [
-    hashlib.sha256("test@domain.com".encode()).hexdigest(),   # Dynamically hashes "test@domain.com"
-    hashlib.sha256("admin@domain.com".encode()).hexdigest()   # Dynamically hashes "admin@domain.com"
-]
+# DYNAMIC SUBSCRIBER MANAGEMENT MATRIX
+# Instead of hardcoding keys or hashes here, the engine pulls allowed emails dynamically from secrets.
+# This allows you to manage clients instantly from your Streamlit dashboard panel.
+if "SUBSCRIBERS" in st.secrets:
+    # Splits a comma-separated text string from your secrets manager, e.g., "admin@domain.com,client@gmail.com"
+    raw_subscribers = st.secrets["SUBSCRIBERS"].split(",")
+    allowed_emails_list = [email.strip().lower() for email in raw_subscribers if email.strip()]
+else:
+    # Default fallback sandbox email accounts for local testing configurations
+    allowed_emails_list = ["test@domain.com", "admin@domain.com"]
+
+# Cryptographically map allowed email lists into secure SHA-256 validation signatures
+VALID_SUBSCRIBER_HASHES = [hashlib.sha256(email.encode()).hexdigest() for email in allowed_emails_list]
 
 # Initialize clean native session state parameters persistently
 if "is_authenticated_user" not in st.session_state:
@@ -145,7 +151,7 @@ with st.sidebar:
     st.markdown("### 💸 Automation Strategy")
     st.info("""
     **SaaS Administration Loop:**
-    When a brand-new customer subscribes to your platform via Stripe, compute the SHA-256 hash of their email and drop it into the `VALID_SUBSCRIBER_HASHES` array within your repository file code structure to authorize them dynamically.
+    When a brand-new customer subscribes to your platform via Stripe, append their email to the `SUBSCRIBERS` comma-separated list variable inside your cloud dashboard settings framework to authorize them instantly.
     """)
 
 # =========================================================================
